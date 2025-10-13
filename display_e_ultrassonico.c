@@ -23,7 +23,8 @@
 /* USER CODE BEGIN Includes */
 #include "Utility.h"
 /* USER CODE END Includes */
-
+#include <stdio.h>
+#include <string.h>
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
@@ -110,10 +111,9 @@ int main(void)
   GPIO_Pin_Mode(GPIOA, PIN_15, OUTPUT);
 
 
-  GPIO_Pin_Mode(GPIOE, PIN_4, INPUT);
-  GPIO_Resistor_Enable(GPIOE, PIN_4, PULL_UP);
-  GPIO_Pin_Mode(GPIOE, PIN_3, INPUT);
-  GPIO_Resistor_Enable(GPIOE, PIN_3, PULL_UP);
+  GPIO_Pin_Mode(GPIOE, PIN_2, INPUT); //echo
+  GPIO_Pin_Mode(GPIOE, PIN_3, OUTPUT); //trig
+
 
   uint8_t seg[10] = {
     0b0111111, // 0
@@ -133,83 +133,89 @@ int main(void)
   GPIO_Write_Pin(GPIOA, PIN_11, HIGH); //d3
   GPIO_Write_Pin(GPIOA, PIN_8, HIGH); //d4
 
-  int contador = 0;
-  int n = 0;
-  int time_us;
 
 
-
-  void leitura();
-  void conversor_d4();
-
-
-
-  void leitura(){
-	  int us;
-
-	  GPIO_Write_Pin(GPIOA, TRIG,  HIGH);
-	  Delay_us(10);
-	  GPIO_Write_Pin(GPIOA, TRIG, LOW);
+  void conversor_d4(float valor_display)
+  {
+      char buffer[6];
+      int d1, d2, d3, d4;
 
 
-	  while(!GPIO_Read_Pin(GPIOA, ECHO));
+      int valor_inteiro = (int)(valor_display * 100);
+      sprintf(buffer, "%04d", valor_inteiro);
 
-	  while(GPIO_Read_Pin(GPIOA, ECHO)){
-		  Delay_us(1);
-		  us++;
-	  }
+      d1 = buffer[0] - '0';
+      d2 = buffer[1] - '0';
+      d3 = buffer[2] - '0';
+      d4 = buffer[3] - '0';
 
-	  time_us = us;
-
-  }
-
-
-  void conversor_d4(float valor_display){
-
-	  string valor_string[10] = float_to_string(valor_display);
-
-	  int d1 = (int)(valor_string[0]);
-	  int d2 = (int)(valor_string[0]);
-	  int d3 = (int)(valor_string[0]);
-	  int d4 = (int)(valor_string[0]);
-
-
-	  GPIO_Write_Pin(GPIOA, PIN_15, LOW);
-      GPIOA->ODR = (GPIOA->ODR & ~(0x7F)) | seg[d1];
+      GPIO_Write_Pin(GPIOA, PIN_15, LOW);
+      GPIOA->ODR = (GPIOA->ODR & ~(0xFF)) | seg[d4];
       HAL_Delay(2);
       GPIO_Write_Pin(GPIOA, PIN_15, HIGH);
 
       GPIO_Write_Pin(GPIOA, PIN_12, LOW);
-      GPIOA->ODR = (GPIOA->ODR & ~(0x7F)) | seg[d2];
+      GPIOA->ODR = (GPIOA->ODR & ~(0xFF)) | seg[d3];
       HAL_Delay(2);
-
       GPIO_Write_Pin(GPIOA, PIN_12, HIGH);
 
       GPIO_Write_Pin(GPIOA, PIN_11, LOW);
-      GPIOA->ODR = (GPIOA->ODR & ~(0x7F)) | seg[d3];
+      GPIOA->ODR = (GPIOA->ODR & ~(0xFF)) | (seg[d2] | 0x80);
       HAL_Delay(2);
       GPIO_Write_Pin(GPIOA, PIN_11, HIGH);
 
       GPIO_Write_Pin(GPIOA, PIN_8, LOW);
-      GPIOA->ODR = (GPIOA->ODR & ~(0x7F)) | seg[d4];
+      GPIOA->ODR = (GPIOA->ODR & ~(0xFF)) | seg[d1];
       HAL_Delay(2);
       GPIO_Write_Pin(GPIOA, PIN_8, HIGH);
 
-
-
   }
+
+  float leitura(void) {
+      unsigned long us = 0;
+      const unsigned long timeout_us = 30000;
+
+      GPIO_Write_Pin(GPIOE, PIN_3, HIGH);
+      Delay_us(10);
+      GPIO_Write_Pin(GPIOE, PIN_3, LOW);
+
+      unsigned long count = 0;
+      while (!GPIO_Read_Pin(GPIOE, PIN_2)) {
+          Delay_us(1);
+          if (++count >= timeout_us) return -1.0f;
+      }
+
+      while (GPIO_Read_Pin(GPIOE, PIN_2)) {
+          Delay_us(1);
+          if (++us >= timeout_us) return -1.0f;
+      }
+
+
+      float distancia_cm = us * 0.01715f;
+
+      return distancia_cm;
+  }
+
+
+  float distancia_cm = 0.0;
+  int n = 0;
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
 
 
 
-	 leitura();
-	 float distancia_cm = time_us * 0.01716f;
 	 conversor_d4(distancia_cm);
 
+	 if ( n == 10 ){
+		 distancia_cm = leitura();
+		 n = 0;
+	 }
+
+	 n++;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
