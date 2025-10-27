@@ -110,7 +110,7 @@ int main(void)
   GPIO_Pin_Mode(GPIOE, PIN_3, INPUT);
   GPIO_Resistor_Enable(GPIOE, PIN_3, PULL_UP);
 
-  uint8_t seg[10] = {
+uint8_t seg[16] = {
     0b0111111, // 0
     0b0000110, // 1
     0b1011011, // 2
@@ -120,9 +120,14 @@ int main(void)
     0b1111101, // 6
     0b0000111, // 7
     0b1111111, // 8
-    0b1101111  // 9
-  };
-
+    0b1101111, // 9
+    0b1110111, // A
+    0b1111100, // b
+    0b0111001, // C
+    0b1011110, // d
+    0b1111001, // E
+    0b1110001  // F
+};
 
   /* USER CODE END 2 */
   /* Infinite loop */
