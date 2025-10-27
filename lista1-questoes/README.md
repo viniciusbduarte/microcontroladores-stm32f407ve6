@@ -135,7 +135,7 @@ Crie um programa que:
 * Ao pressionar **K1**, o **LED D3** ligue por **4 s**.
 
 Após os períodos, os LEDs desligam e aguardam novos pressionamentos.
-O sistema deve funcionar **sem travar**, permitindo que os dois LEDs operem independentemente.
+O sistema deve funcionar **sem travar**, permitindo que os dois LEDs operem independentemente. Se K0 for pressionado enquanto D2 está ligado, D2 deve iniciar um novo pulso imediatamente. Já se K1 for pressionado enquanto D3 está ligado, D3 deve esperar o pulso atual acabar para começar outro.
 
 > Utilize interrupções de temporizador e flags de tempo.
 > Pinos sugeridos: **PE4 → K0**, **PE3 → K1**.
