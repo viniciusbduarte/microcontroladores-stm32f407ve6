@@ -236,7 +236,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void EXTI0_IRQHandler(){
 	if ( grau < 2500) grau+=50;
-	EXTI_Clear_Pending(EXTI3);
+	EXTI_Clear_Pending(EXTI0);
 
 }
 void EXTI4_IRQHandler(){
