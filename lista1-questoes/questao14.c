@@ -22,7 +22,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Utility.h"
-#include <string.h>
 #include <stdio.h>
 /* USER CODE END Includes */
 
