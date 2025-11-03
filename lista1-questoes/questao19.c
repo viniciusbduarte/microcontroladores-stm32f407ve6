@@ -22,9 +22,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Utility.h"
-/* USER CODE END Includes */
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
+/* USER CODE END Includes */
+
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
@@ -41,6 +42,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 
@@ -49,13 +51,15 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+int k0 = 0;
+int kup = 0;
 /* USER CODE END 0 */
 
 /**
@@ -87,19 +91,21 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   Utility_Init();
+
+
   GPIO_Clock_Enable(GPIOA);
   GPIO_Clock_Enable(GPIOE);
 
 
-  GPIO_Pin_Mode(GPIOA, PIN_12, OUTPUT);
+  GPIO_Pin_Mode(GPIOA, PIN_6, OUTPUT);
 
 
 
   GPIO_Pin_Mode(GPIOE, PIN_2, INPUT); //echo
   GPIO_Pin_Mode(GPIOE, PIN_3, OUTPUT); //trig
-
 
 
 
@@ -122,42 +128,41 @@ int main(void)
           if (++us >= timeout_us) return -1.0f;
       }
 
-
-      float distancia_cm = us * 0.01715f;
-
-      return distancia_cm;
+      return us * 0.01715f;
   }
 
-
-  float distancia_cm = 0.0;
   int time = 0;
 
+
+
+
+  char buffer[50];
+
+
+
   /* USER CODE END 2 */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
   while (1)
   {
-	    distancia_cm = leitura();
-	    
-	    if (distancia_cm <= 50.0) {
-	        if (distancia_cm <= 10.0) {
-	            time = 300;
-	        } else if (distancia_cm <= 30.0) {
-	            time = 600;
-	        } else {
-	            time = 1000;
-	        }
-	        
-	        //buzzer
-	        GPIO_Write_Pin(GPIOA, PIN_6, HIGH);
-	        delay_ms(time);
-	        GPIO_Write_Pin(GPIOA, PIN_6, LOW);
-	        delay_ms(time);
-	    }
-	    else {
-	        delay_ms(100); 
-	    }
+      int distancia_cm = leitura();
+      if (distancia_cm < 0) continue; // invalid
+
+      sprintf(buffer, "Distância: %d cm\r\n", distancia_cm);
+      HAL_UART_Transmit(&huart1, (uint8_t*)buffer, strlen(buffer), HAL_MAX_DELAY);
+
+      if (distancia_cm <= 50.0f) {
+          if (distancia_cm <= 10.0f) time = 100;
+          else if (distancia_cm <= 30.0f) time = 300;
+          else time = 600;
+
+          GPIO_Write_Pin(GPIOA, PIN_6, HIGH);
+          Delay_ms(time);
+          GPIO_Write_Pin(GPIOA, PIN_6, LOW);
+          Delay_ms(time);
+      } else {
+          Delay_ms(100);}
 
 
     /* USER CODE END WHILE */
@@ -213,6 +218,39 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -225,6 +263,7 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
