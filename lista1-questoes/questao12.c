@@ -99,7 +99,7 @@ int main(void)
 
   GPIO_Clock_Enable(GPIOA);
   GPIO_Pin_Mode(GPIOA, PIN_5, OUTPUT);
-  
+
   GPIO_Pin_Mode(GPIOA, PIN_6, OUTPUT);
   GPIO_Pin_Mode(GPIOA, PIN_7, OUTPUT);
 
@@ -109,28 +109,48 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  GPIO_Write_Pin(GPIOA, PIN_6, LOW);   
-	  GPIO_Write_Pin(GPIOA, PIN_7, HIGH);  
-	  
-	  for(int tempo = 0; i <= 500; i++){
-		  GPIO_Write_Pin(GPIOA, PIN_5, HIGH);   
+
+
+
+
+
+	  GPIO_Write_Pin(GPIOA, PIN_6, HIGH);
+	  GPIO_Write_Pin(GPIOA, PIN_7, LOW);
+
+	  for(int tempo = 2000; tempo >= 0; tempo--){
+		  GPIO_Write_Pin(GPIOA, PIN_5, HIGH);
+		  Delay_us(2000 - tempo);
+		  GPIO_Write_Pin(GPIOA, PIN_5, LOW);
 		  Delay_us(tempo);
-		  GPIO_Write_Pin(GPIOA, PIN_5, LOW);   
-		  Delay_us(500 - tempo);
 	  }
-	  
-	  GPIO_Write_Pin(GPIOA, PIN_6, HIGH);   
-	  GPIO_Write_Pin(GPIOA, PIN_7, LOW);  
-	  
-	  for(int tempo = 500; i <= 500; i--){
-		  GPIO_Write_Pin(GPIOA, PIN_5, HIGH);   
+	  for(int tempo = 0; tempo <= 2000; tempo++){
+		  GPIO_Write_Pin(GPIOA, PIN_5, HIGH);
+		  Delay_us(2000 - tempo);
+		  GPIO_Write_Pin(GPIOA, PIN_5, LOW);
 		  Delay_us(tempo);
-		  GPIO_Write_Pin(GPIOA, PIN_5, LOW);   
-		  Delay_us(500 - tempo);
+		  }
+
+
+
+	  GPIO_Write_Pin(GPIOA, PIN_6, LOW);
+	  GPIO_Write_Pin(GPIOA, PIN_7, HIGH);
+
+
+
+	  for(int tempo = 2000; tempo >= 0; tempo--){
+		  GPIO_Write_Pin(GPIOA, PIN_5, HIGH);
+		  Delay_us(2000 - tempo);
+		  GPIO_Write_Pin(GPIOA, PIN_5, LOW);
+		  Delay_us(tempo);
 	  }
-	  
-	  
-	  
+
+	  for(int tempo = 0; tempo <= 2000; tempo++){
+		  GPIO_Write_Pin(GPIOA, PIN_5, HIGH);
+		  Delay_us(2000 - tempo);
+		  GPIO_Write_Pin(GPIOA, PIN_5, LOW);
+		  Delay_us(tempo);
+		  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
