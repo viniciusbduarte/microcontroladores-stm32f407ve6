@@ -108,25 +108,14 @@ int main(void)
   GPIO_Pin_Mode(GPIOA, PIN_3, OUTPUT); //IN B2
 
   
-  
-	void acionar_passo(int passo){
-		  switch(passo){
-			case 1:
-				  GPIO_Write_Port(GPIOA, 0b1000);
-				  break;
-			case 2:
-				  GPIO_Write_Port(GPIOA, 0b0010);
-				  break;
-			case 3:
-				  GPIO_Write_Port(GPIOA, 0b0100);
-				  break;
-			case 4:
-				  GPIO_Write_Port(GPIOA, 0b0001);
-				  break;
-					   }
-	}
-	
-	
+  void acionar_passo(int passo){
+      switch(passo){
+          case 1: GPIO_Write_Port(GPIOA, 0b1100); break;
+          case 2: GPIO_Write_Port(GPIOA, 0b0110); break;
+          case 3: GPIO_Write_Port(GPIOA, 0b0011); break;
+          case 4: GPIO_Write_Port(GPIOA, 0b1001); break;
+      }
+  }
 	
 int passo = 1;
   /* USER CODE END 2 */
@@ -143,7 +132,7 @@ int passo = 1;
 	        acionar_passo(passo);
 	        passo++;
 	        if(passo > 4) passo = 1; 
-	        Delay_us(1600); // time ( value >= 1600 ) ( v max )
+	        Delay_us(3000); // time ( value >= 1600 ) ( v max )
 	    }
 	  
 	    Delay_ms(1000);
@@ -155,7 +144,7 @@ int passo = 1;
 	        acionar_passo(passo);
 	        passo--;
 	        if(passo < 1) passo = 4; 
-	        Delay_us(1600); // time ( value >= 1600 ) ( v max )
+	        Delay_us(3000); // time ( value >= 1600 ) ( v max )
 	    }
 	  
 	 
