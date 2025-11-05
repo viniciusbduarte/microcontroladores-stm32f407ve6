@@ -22,6 +22,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Utility.h"
+#include "time.h"
+#include "stdio.h"
+#include "stdlib.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,6 +45,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+int RODADAS = 50;
 
 /* USER CODE END PV */
 
@@ -90,88 +94,102 @@ int main(void)
   Utility_Init();
   GPIO_Clock_Enable(GPIOA);
   GPIO_Clock_Enable(GPIOE);
-  GPIO_Pin_Mode(GPIOA, PIN_6, OUTPUT);
-  GPIO_Pin_Mode(GPIOA, PIN_7, OUTPUT);
 
+  // LEDs nas saídas PA2, PA3, PA4, PA5
+  uint16_t leds[4] = {PIN_2, PIN_3, PIN_4, PIN_5};
+  for (int i = 0; i < 4; i++) {
+      GPIO_Pin_Mode(GPIOA, leds[i], OUTPUT);
+      GPIO_Write_Pin(GPIOA, leds[i], LOW); // LEDs apagados inicialmente
+  }
 
-  GPIO_Pin_Mode(GPIOE, PIN_5, INPUT);
-  GPIO_Resistor_Enable(GPIOE, PIN_5, PULL_UP);
-  GPIO_Pin_Mode(GPIOE, PIN_4, INPUT);
-  GPIO_Resistor_Enable(GPIOE, PIN_4, PULL_UP);
-  GPIO_Pin_Mode(GPIOE, PIN_3, INPUT);
-  GPIO_Resistor_Enable(GPIOE, PIN_3, PULL_UP);
-  GPIO_Pin_Mode(GPIOE, PIN_2, INPUT);
-  GPIO_Resistor_Enable(GPIOE, PIN_2, PULL_UP);
-  
+  // Botões nas entradas PE2, PE3, PE4, PE5 (com pull-up)
+  uint16_t botoes[4] = {PIN_2, PIN_3, PIN_4, PIN_5};
+  for (int i = 0; i < 4; i++) {
+      GPIO_Pin_Mode(GPIOE, botoes[i], INPUT);
+      GPIO_Resistor_Enable(GPIOE, botoes[i], PULL_UP);
+  }
 
-  static uint16_t estado_anterior5 = 1;
-  static uint16_t estado_anterior4= 1;
-  static uint16_t estado_anterior3 = 1;
-  static uint16_t estado_anterior2 = 1;
-
+  // Inicializa gerador aleatório apenas uma vez
+  srand(HAL_GetTick());
+  uint16_t sequencia[RODADAS];
   /* USER CODE END 2 */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
-  {
-	    uint16_t estado_botao5 = GPIO_Read_Pin(GPIOE, PIN_5);
-	    uint16_t estado_botao4 = GPIO_Read_Pin(GPIOE, PIN_4);
-	    uint16_t estado_botao3 = GPIO_Read_Pin(GPIOE, PIN_3);
-	    uint16_t estado_botao2 = GPIO_Read_Pin(GPIOE, PIN_2);
+      {
+          // Gera uma nova sequência para cada jogo
+          for (int i = 0; i < 50; i++) {
+              sequencia[i] = Random_Number() % 4;
+          }
+
+          int rodada = 0;
+          int delayTempo = 400; // tempo base entre piscadas
+
+          while (1) {
+              // Mostra sequência até a rodada atual
+              for (int i = 0; i <= rodada; i++) {
+                  GPIO_Write_Pin(GPIOA, leds[sequencia[i]], HIGH);
+                  Delay_ms(delayTempo);
+                  GPIO_Write_Pin(GPIOA, leds[sequencia[i]], LOW);
+                  Delay_ms(delayTempo / 2);
+              }
+
+              // Espera o jogador repetir a sequência
+              int n = 0;
+              int perdeu = 0;
+
+              while (n <= rodada && !perdeu) {
+                  for (int i = 0; i < 4; i++) {
+                      if (GPIO_Read_Pin(GPIOE, botoes[i]) == 0) {
+                          // Pisca LED correspondente
+                          GPIO_Write_Pin(GPIOA, leds[i], HIGH);
+                          Delay_ms(200);
+                          GPIO_Write_Pin(GPIOA, leds[i], LOW);
+
+                          if (sequencia[n] == i) {
+                              n++; // acertou o passo
+                          } else {
+                              perdeu = 1; // errou
+                          }
+
+                          // Espera soltar o botão
+                          while (GPIO_Read_Pin(GPIOE, botoes[i]) == 0);
+                          Delay_ms(50);
+                      }
+                  }
+              }
+
+              if (perdeu) {
+                  // Pisca todos os LEDs 3x
+                  for (int j = 0; j < 3; j++) {
+                      GPIO_Write_Port(GPIOA, 0b11111100); // pinos 2–5
+                      Delay_ms(250);
+                      GPIO_Write_Port(GPIOA, 0b00000000);
+                      Delay_ms(250);
+                  }
+                  Delay_ms(500);
+                  break; // reinicia o jogo
+              }
+
+              rodada++;
+
+              // Acelera a cada rodada
+              if (delayTempo > 150) delayTempo -= 25;
+
+              // Vitória se chegar ao fim
+              if (rodada >= 50) {
+                  for (int j = 0; j < 5; j++) {
+                      GPIO_Write_Port(GPIOA, 0b11111100);
+                      Delay_ms(150);
+                      GPIO_Write_Port(GPIOA, 0b00000000);
+                      Delay_ms(150);
+                  }
+                  break;
+              }
+          }
 
 
-for(int rodadas = 0; rodadas < 10; rodadas++){
-	
-	
-	
-	
-	
-	
-	
-	
-}
-
-
-
-
-	    if (estado_botao5 == 0 && estado_anterior5 == 1) {
-	        GPIO_Write_Pin(GPIOA, PIN_5, LOW);
-	        Delay_ms(500);
-	        GPIO_Write_Pin(GPIOA, PIN_5, HIGH);
-	    }
-	    estado_anterior5 = estado_botao5;
-
-	    if (estado_botao4 == 0 && estado_anterior4 == 1) {
-	        GPIO_Write_Pin(GPIOA, PIN_4, LOW);
-	        Delay_ms(500);
-	        GPIO_Write_Pin(GPIOA, PIN_4, HIGH);
-	    }
-	    estado_anterior4 = estado_botao4;
-
-	    if (estado_botao3 == 0 && estado_anterior3 == 1) {
-	        GPIO_Write_Pin(GPIOA, PIN_3, LOW);
-	        Delay_ms(500);
-	        GPIO_Write_Pin(GPIOA, PIN_3, HIGH);
-	    }
-	    estado_anterior3 = estado_botao3;
-
-	    if (estado_botao2 == 0 && estado_anterior2 == 1) {
-	        GPIO_Write_Pin(GPIOA, PIN_2, LOW);
-	        Delay_ms(500);
-	        GPIO_Write_Pin(GPIOA, PIN_2, HIGH);
-	    }
-	    estado_anterior2 = estado_botao2;
-
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
