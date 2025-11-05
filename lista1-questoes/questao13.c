@@ -98,25 +98,25 @@ int main(void)
 
 
   GPIO_Clock_Enable(GPIOA);
-  
+
   //Bobina 1
   GPIO_Pin_Mode(GPIOA, PIN_0, OUTPUT); //IN A1
   GPIO_Pin_Mode(GPIOA, PIN_1, OUTPUT); //IN B1
-  
+
   //Bobina 2
   GPIO_Pin_Mode(GPIOA, PIN_2, OUTPUT); //IN A2
   GPIO_Pin_Mode(GPIOA, PIN_3, OUTPUT); //IN B2
 
-  
+
   void acionar_passo(int passo){
       switch(passo){
-          case 1: GPIO_Write_Port(GPIOA, 0b1100); break;
-          case 2: GPIO_Write_Port(GPIOA, 0b0110); break;
-          case 3: GPIO_Write_Port(GPIOA, 0b0011); break;
-          case 4: GPIO_Write_Port(GPIOA, 0b1001); break;
+          case 1: GPIO_Write_Port(GPIOA, 0b0001); break;
+          case 2: GPIO_Write_Port(GPIOA, 0b1000); break;
+          case 3: GPIO_Write_Port(GPIOA, 0b0010); break;
+          case 4: GPIO_Write_Port(GPIOA, 0b0100); break;
       }
   }
-	
+
 int passo = 1;
   /* USER CODE END 2 */
 
@@ -124,30 +124,35 @@ int passo = 1;
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  
-	  
-	  
+
 	    for(int passos = 0; passos < 200; passos++) // 200 steps = 360
 	    {
 	        acionar_passo(passo);
 	        passo++;
-	        if(passo > 4) passo = 1; 
+	        if(passo > 4) passo = 1;
 	        Delay_us(3000); // time ( value >= 1600 ) ( v max )
 	    }
-	  
+	    for(int passos = 0; passos < 200; passos++) // 200 steps = 360
+	    {
+	        acionar_passo(passo);
+	        passo++;
+	        if(passo > 4) passo = 1;
+	        Delay_us(3000); // time ( value >= 1600 ) ( v max )
+	    }
+
 	    Delay_ms(1000);
-	    
+
 	    passo = 4;
-	    
+
 	    for(int passos = 0; passos < 200; passos++) // 200 steps = 360
 	    {
 	        acionar_passo(passo);
 	        passo--;
-	        if(passo < 1) passo = 4; 
+	        if(passo < 1) passo = 4;
 	        Delay_us(3000); // time ( value >= 1600 ) ( v max )
 	    }
-	  
-	 
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
