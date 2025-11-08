@@ -80,6 +80,27 @@ Os pinos apresentados foram previamente configurados como saídas.
 Os programas 1 e 2 rodam nos microcontroladores e fazem o LED piscar.  
 Considere que o **Programa 2** começa a ser executado com um atraso de 80 µs em relação ao **Programa 1**.  
 
+![Diagrama do circuito](questao5.png)
+
+```c
+//Programa 1
+while(1){
+    GPIOE->ODR &= ~(1 << 3);
+    Delay_us(2800);
+    GPIOC->ODR |= (1 << 3);
+    Delay_us(200);
+}
+```
+
+```c
+//Programa 2
+while(1){
+    GPIOE->ODR &= ~(1 << 7);
+    Delay_us(4800);
+    GPIOC->ODR |= (1 << 7);
+    Delay_us(200);
+}
+```
 **a)** Com qual frequência o LED piscará?  
 **b)** Qual a largura do pulso aplicada sobre o LED?  
 
@@ -89,63 +110,35 @@ Considere que o **Programa 2** começa a ser executado com um atraso de 80 µs e
 
 Na figura abaixo, é mostrado um diagrama com dois microcontroladores STM32 que fornecem sinais PWM a dois LEDs por meio de programas distintos, que executam simultaneamente em cada microcontrolador.  
 
+![Diagrama do circuito](questao6.png)
+
+```c
+//Programa 1
+while(1){
+    GPIOC->ODR |= (1 << 9);
+    Delay_us(tempo);
+    GPIOE->ODR &= ~(1 << 9);
+    Delay_us(1250 - tempo);
+    tempo+ = tempo + 50;;
+    if(tempo==1250) tempo=0;
+}
+```
+
+```c
+//Programa 2
+while(1){
+    GPIOC->ODR |= (1 << 4);
+    Delay_us(tempo);
+    GPIOE->ODR &= ~(1 << 4);
+    Delay_us(4000 - tempo);
+    tempo+ = tempo + 10;;
+    if(tempo==4000) tempo=0;
+}
+```
+
 Determine:
 
 **a)** Qual a frequência aproximada de cada sinal PWM.  
 **b)** Sabendo que o brilho dos LEDs é controlado pelo PWM, em quanto tempo, após o início da execução dos programas, os dois LEDs estarão simultaneamente com o brilho mínimo pela primeira vez.  
 
----
 
-## Questão 2
-
-Durante as atividades práticas, foi utilizado um teclado de membrana, formado por teclas organizadas em uma matriz de 4 linhas e 4 colunas.  
-Quando pressionada, uma tecla conecta uma linha com uma coluna.  
-As linhas são conectadas a pinos de saída do tipo *open-drain* com resistores de *pull-up* habilitados, enquanto as colunas são conectadas a pinos de entrada com resistores de *pull-up* também habilitados.  
-
-Para detectar qual tecla está sendo pressionada, o microcontrolador leva uma linha de cada vez para nível lógico baixo e lê o nível lógico das colunas.
-
-**a)** Explique o que acontece no hardware se duas teclas quaisquer forem pressionadas simultaneamente e como o software pode tratar esse evento.  
-
-**b)** Se as saídas de linha não forem configuradas como *open-drain*, mas sim como saídas normais (*push-pull*), explique o que acontece no hardware se duas teclas quaisquer forem pressionadas simultaneamente e como o software pode tratar esse evento.  
-
----
-
-## Questão 4
-
-Considere que o microcontrolador STM32 executa um trecho de código e exibe o resultado em um display de 7 segmentos de cátodo comum.  
-Determine qual o dígito hexadecimal será exibido após a execução.  
-
----
-
-## Questão 5
-
-A posição do eixo de um servomotor está sendo controlada por um microcontrolador STM32.  
-Um segundo microcontrolador deseja “ler” a posição do eixo desse servo.  
-Para isso, a linha de controle do servomotor é conectada ao pino PA0, configurado como entrada, do segundo microcontrolador.  
-
-Escreva um trecho de código para que o segundo microcontrolador armazene constantemente em uma variável a posição (em graus) do eixo do servomotor com resolução de fração de grau.  
-
----
-
-## Questão 6
-
-Considere o circuito da figura abaixo.  
-A posição do eixo do servomotor é fixa e está sendo controlada pelo microcontrolador STM32 A.  
-Sabe-se que um pulso de controle de 500 µs movimenta o eixo do servomotor para a posição de 0 grau, enquanto um pulso de 2500 µs movimenta o eixo do servomotor para a posição de 180 graus.  
-
-Para manter a posição do eixo do servomotor, os pulsos são enviados periodicamente com uma frequência de 40 Hz.  
-O microcontrolador STM32 B foi configurado para ler o pino PC2 como entrada e executar um programa que mede a duração do pulso.  
-
-Após um tempo maior que um segundo de execução, determine os possíveis valores da variável observada.  
-
----
-
-
-## Questão 12
-
-Considere o circuito da figura abaixo.  
-A posição do eixo do servomotor é fixa e está sendo controlada pelo microcontrolador STM32 A.  
-Sabe-se que um pulso de 2500 µs posiciona o eixo do servomotor a 180 graus, enquanto um pulso de 500 µs o posiciona a 0 grau.  
-
-O microcontrolador STM32 B foi configurado para ler o pino PC2 como entrada e medir a duração do pulso.  
-Após um tempo maior que um segundo de execução, determine os possíveis valores da variável analisada.  
