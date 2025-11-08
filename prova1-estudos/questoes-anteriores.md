@@ -32,6 +32,8 @@ Explique por que **não podemos classificar um microcontrolador STM32 como um co
 A figura abaixo mostra o gráfico de um sinal PWM em um pino de um microcontrolador STM32 que opera com um sinal de clock de 60 MHz.  
 O sinal controla a velocidade e a potência de um motor DC de 250 W e 2000 RPM.
 
+![Diagrama do circuito](questao3.png)
+
 ```c
 while(1){
     GPIOE->ODR &= ~(1 << 9);
@@ -54,6 +56,8 @@ Considerando o sinal observado, determine:
 
 A figura abaixo mostra o esboço gráfico de um sinal PWM em um pino de um microcontrolador STM32 que opera com sinal de clock de 10 MHz.  
 O sinal controla a corrente e a potência de um motor DC de 400 W e 800 RPM.
+
+![Diagrama do circuito](questao4.png)
 
 ```c
 while(1){
