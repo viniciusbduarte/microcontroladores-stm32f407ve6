@@ -60,11 +60,8 @@ while(1){
 Considerando o sinal observado, determine:
 
 **a)** Qual o pino utilizado. 
-
 **b)** Qual a frequência e o ciclo de trabalho (duty cycle) do sinal PWM. 
-
 **c)** Qual a potência aplicada ao motor.  
-
 **d)** Qual a velocidade de rotação do motor.  
 
  <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: 
@@ -145,6 +142,22 @@ while(1){
 **a)** Com qual frequência o LED piscará?  
 **b)** Qual a largura do pulso aplicada sobre o LED?  
 
+ <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: 
+     - a) Período Resultante = MMC(PeriodoProg1, PeriodoProg2) = MMC(3000,5000) = 15000 us = 0,015 s
+          Frequência  = 1/periodo_resultante = 1/0,015 = 66.67 Hz
+     - b) Início do Pulso PE3: t = 0 us;
+          Fim do Pulso PE3: t = 200 us;
+          Início do Pulso PE7: t = 80 us;    
+          Fim do Pulso PE7: t = 280 us;
+
+     Início da Sobreposição = max(inicioPE3, inicioPE7) = max(0,80) = 80 us
+     Fim da Sobreposição = mín(fimPE3, fimPE7) = mín(200,280) = 200 us
+     Largura do Pulso = Fim da Sobreposição - Inicio da Sobreposição = 120 us
+
+     Esse Pulso de 120 us ocorre a cada ciclo de 15000us. 
+     
+     </pre>
+    
 ---
 
 ## Questão 6
@@ -182,6 +195,21 @@ Determine:
 **a)** Qual a frequência aproximada de cada sinal PWM.  
 **b)** Sabendo que o brilho dos LEDs é controlado pelo PWM, em quanto tempo, após o início da execução dos programas, os dois LEDs estarão simultaneamente com o brilho mínimo pela primeira vez.  
 
+ <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: 
+     - a) Frequência  = 1/periodo = 1/1250 * 10^-6 = 800 Hz
+                                  = 1/4000 * 10^-6 = 250 Hz
+     
+     - b) 1250/50 = 25 e 4000/10 = 400
+          25 * 1250 = 31250 e 400 * 4000 = 1600000
+          1600000/31250 = 51,2 
+          n/n * 51,2 = primeira fração de inteiros possivel 
+          5/5 * 51,2 = 256/5
+          5 * 1600000 ou 256 * 31250 = 8 segundos 
+
+          Estarão no máximo simultaneamente após 8 segundos. 
+     
+     </pre>
+     
 ---
 
 ## Questão 7
