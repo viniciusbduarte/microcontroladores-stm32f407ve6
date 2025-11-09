@@ -19,6 +19,8 @@ Leia as afirmações abaixo sobre o microcontrolador STM32:
 - d) Apenas IV e V  
 - e) Apenas I e V  
 
+<span style="color: red;">Resposta: </span>
+
 ---
 
 ## Questão 2
