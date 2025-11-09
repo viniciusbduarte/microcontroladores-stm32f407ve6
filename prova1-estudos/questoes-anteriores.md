@@ -60,8 +60,11 @@ while(1){
 Considerando o sinal observado, determine:
 
 **a)** Qual o pino utilizado. 
+
 **b)** Qual a frequência e o ciclo de trabalho (duty cycle) do sinal PWM. 
+
 **c)** Qual a potência aplicada ao motor.  
+
 **d)** Qual a velocidade de rotação do motor.  
 
  <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: 
