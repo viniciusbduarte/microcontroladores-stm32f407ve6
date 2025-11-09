@@ -10,7 +10,7 @@ Leia as afirmações abaixo sobre o microcontrolador STM32:
 2. Os microcontroladores STM32 possuem unidade para operações de ponto flutuante (FPU) em todas as versões da família.  
 3. O STM32 pode ser programado unicamente na linguagem Assembly, apenas em linguagem de alto nível, devido à sua arquitetura avançada.  
 4. A ferramenta de desenvolvimento utilizada para programar o STM32 é o STM32CubeIDE.  
-5. O microcontrolador STM32 é do tipo ARM Cortex-M7 e é capaz de operar a frequências de até 168 MHz.  
+5. O microcontrolador STM32F407 é do tipo ARM Cortex-M7 e é capaz de operar a frequências de até 168 MHz.  
 
 **É verdadeiro o que se afirma:**
 - a) Apenas IV  
@@ -20,7 +20,12 @@ Leia as afirmações abaixo sobre o microcontrolador STM32:
 - e) Apenas I e V  
 
 <pre style="background-color:#222; color:#00ff00; padding:10px;">
-Resposta
+Resposta: a) Apenas IV  
+    - 1) Falso. Baseado na Arquitetura ARM Cortex-M, não M4;
+    - 2) Falso. Possuem apenas na M4, M7 e M33;
+    - 3) Falso. O STM pode sim ser programado em Assembly, mas não somente. 
+    - 4) Verdadeiro. 
+    - 5) Falso. É do tipo ARM Cortex-M4.
     </pre>
 
 ---
@@ -28,6 +33,11 @@ Resposta
 ## Questão 2
 
 Explique por que **não podemos classificar um microcontrolador STM32 como um computador CISC com arquitetura Von-Neumann.**
+
+<pre style="background-color:#222; color:#00ff00; padding:10px;">
+Resposta: 
+    - O STM32 não pode ser classficado como CISC nem Von-Neumann pois utiliza um núcleo ARM Cortex-M baseado na arquitetura RISC e Harvard, com conjunto de instruções reduzido e barramentos separados para dados e instruções. 
+    </pre>
 
 ---
 
@@ -49,8 +59,8 @@ while(1){
 ```
 Considerando o sinal observado, determine:
 
-**a)** Qual o pino utilizado.  
-**b)** Qual a frequência e o ciclo de trabalho (duty cycle) do sinal PWM.  
+**a)** Qual o pino utilizado.  <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: PE9---
+**b)** Qual a frequência e o ciclo de trabalho (duty cycle) do sinal PWM.  <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: Duty Cicle = sets / total = 2/5 = 0,4 = 40% , Frequência = ---
 **c)** Qual a potência aplicada ao motor.  
 **d)** Qual a velocidade de rotação do motor.  
 
