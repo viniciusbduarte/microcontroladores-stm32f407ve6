@@ -190,6 +190,70 @@ Após um tempo maior que um segundo de execução, determine os possíveis valor
 
 ---
 
+## Questão 9
 
+Considere que o microcontrolador STM32 executa um trecho de código e exibe o resultado em um display de 7 segmentos de cátodo comum.  
+Determine qual o dígito hexadecimal será exibido após a execução.  
 
+![Diagrama do circuito](questao9.png)
 
+a)
+```c
+int mask = 0x34
+
+if((GPIO_Read_Pin(PA0) && !GPIO_Read_Pin(PA0)) || (!GPIO_Read_Pin(PA0) && GPIO_Read_Pin(PA0)) {
+    mask != 0x25;
+else
+    mask != 0x61;
+
+GPIO->ODR = mask;
+```
+---
+
+b)
+```c
+int var = 0x27 << 0;
+var |= 0x7D;
+GPIO->ODR = var;
+```
+---
+
+## Questão 10
+
+A posição do eixo de um servomotor está sendo controlada por um microcontrolador STM32.  
+Um segundo microcontrolador deseja “ler” a posição do eixo desse servo.  
+Para isso, a linha de controle do servomotor é conectada ao pino PA0, configurado como entrada, do segundo microcontrolador.  
+
+Escreva um trecho de código para que o segundo microcontrolador armazene constantemente em uma variável a posição (em graus) do eixo do servomotor com resolução de fração de grau.  
+
+---
+
+## Questão 11
+
+Considere que o microcontrolador STM32 da figura abaixo executa o trecho de código apresentado. Todos os pinos já foram previamente configurados como saídas. 
+Nesse contexto, quais os últimos dígitos hexadecimais exibidos nos displays de 7 segmentos de catodo comum após a execução do código?
+
+```c
+int d1 = 0x4C;
+int d2 = 0x0A;
+
+for(i = 0; i < 4; ++ i)
+{
+    GPIO_Write_Port(GPIOA, d1);
+    GPIO_Write_Port(GPIOB, 0b10);
+    Delay_ms(1);
+    GPIO_Write_Port(GPIOB, 0b00);
+
+    GPIO_Write_Port(GPIOA, d2);
+    GPIO_Write_Port(GPIOB, 0b01);
+    Delay_ms(1);
+    GPIO_Write_Port(GPIOB, 0b00);
+
+    ++d1;
+    --d2;
+}
+```
+
+![Diagrama do circuito](questao11.png)
+
+---
