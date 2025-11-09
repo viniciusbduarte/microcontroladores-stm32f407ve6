@@ -145,4 +145,51 @@ Determine:
 **a)** Qual a frequência aproximada de cada sinal PWM.  
 **b)** Sabendo que o brilho dos LEDs é controlado pelo PWM, em quanto tempo, após o início da execução dos programas, os dois LEDs estarão simultaneamente com o brilho mínimo pela primeira vez.  
 
+---
+
+## Questão 7
+
+Durante as atividades práticas, foi utilizado um teclado de membrana, formado por teclas organizadas em uma matriz de 4 linhas e 4 colunas.  
+Quando pressionada, uma tecla conecta uma linha com uma coluna.  
+As linhas são conectadas a pinos de saída do tipo *open-drain* com resistores de *pull-up* habilitados, enquanto as colunas são conectadas a pinos de entrada com resistores de *pull-up* também habilitados.  
+
+![Diagrama do circuito](questao7.png)
+
+Para detectar qual tecla está sendo pressionada, o microcontrolador leva uma linha de cada vez para nível lógico baixo e lê o nível lógico das colunas.
+
+**a)** Explique o que acontece no hardware se duas teclas quaisquer forem pressionadas simultaneamente e como o software pode tratar esse evento.  
+
+**b)** Se as saídas de linha não forem configuradas como *open-drain*, mas sim como saídas normais (*push-pull*), explique o que acontece no hardware se duas teclas quaisquer forem pressionadas simultaneamente e como o software pode tratar esse evento.  
+
+---
+
+## Questão 8
+
+Considere o circuito da figura abaixo.  
+A posição do eixo do servomotor é fixa e está sendo controlada pelo microcontrolador STM32 A.  
+Sabe-se que um pulso de controle de 500 µs movimenta o eixo do servomotor para a posição de 0 grau, enquanto um pulso de 2500 µs movimenta o eixo do servomotor para a posição de 180 graus.  
+
+```c
+// Programa B (servo)
+while(1){
+    int X = 0;
+    while(!GPIO_Read_Pin(GPIOC, PIN_2))
+        Delay_us(1);
+        X++;
+    int Y = X;
+}
+
+```
+
+![Diagrama do circuito](questao8.png)
+
+Para manter a posição do eixo do servomotor, os pulsos são enviados periodicamente com uma frequência de 40 Hz.  
+O microcontrolador STM32 B foi configurado para ler o pino PC2 como entrada e executar um programa que mede a duração do pulso.  
+
+Após um tempo maior que um segundo de execução, determine os possíveis valores da variável observada.  
+
+---
+
+
+
 
