@@ -59,11 +59,21 @@ while(1){
 ```
 Considerando o sinal observado, determine:
 
-**a)** Qual o pino utilizado.  <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: PE9---
-**b)** Qual a frequência e o ciclo de trabalho (duty cycle) do sinal PWM.  <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: Duty Cicle = sets / total = 2/5 = 0,4 = 40% , Frequência = ---
+**a)** Qual o pino utilizado. 
+**b)** Qual a frequência e o ciclo de trabalho (duty cycle) do sinal PWM. 
 **c)** Qual a potência aplicada ao motor.  
 **d)** Qual a velocidade de rotação do motor.  
 
+ <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: 
+     - a) PE9
+     - b) Duty Cicle = HIGH/total = 2/5 = 0,4 = 40% 
+             período de um ciclo de clock =  1/sinal_clock = 1/60MHz = ( 16,666 * 10^-9 ) = 16,666 ns
+             período do sinal PWM = 5 ciclos x periodo_ciclo_clock = 5 x 16,666 ns = 83,333 ns
+          Frequência = 1 / periodo_PWM = 1 / ( 83,333 * 10^-9 ) = 12 * 10^6 = 12MHz 
+     - c) Potência = Pmax * Duty Cicle = 250 W * 0,4 = 100 W
+     - d) Velocidade = Vmax * Duty Cicle = 2000 * 0,4 = 800 RPM
+     </pre>
+    
 ---
 
 ## Questão 4
@@ -89,6 +99,16 @@ Determine:
 **c)** Qual a potência aplicada ao motor.  
 **d)** Qual a velocidade de rotação do motor.  
 
+ <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: 
+     - a) PE9
+     - b) Duty Cicle = HIGH/total = 1/5 = 0,2 = 20% 
+             período de um ciclo de clock =  1/sinal_clock = 1/10MHz = 0,1 x 10^-6 = 0,1 us
+             período do sinal PWM = 5 ciclos x periodo_ciclo_clock = 5 x 0,1 us = 0,5 us
+          Frequência = 1 / periodo_PWM = 1 / ( 0,5 * 10^-6 ) = 2 * 10^6 = 2 MHz 
+     - c) Potência = Pmax * Duty Cicle = 400 W * 0,2 = 80 W
+     - d) Velocidade = Vmax * Duty Cicle = 800 * 0,2 = 160 RPM
+     </pre>
+     
 ---
 
 ## Questão 5
