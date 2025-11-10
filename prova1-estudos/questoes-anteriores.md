@@ -272,7 +272,7 @@ Após um tempo maior que um segundo de execução, determine os possíveis valor
 ## Questão 9
 
 Considere que o microcontrolador STM32 executa um trecho de código e exibe o resultado em um display de 7 segmentos de cátodo comum.  
-Determine qual o dígito hexadecimal será exibido após a execução.  
+Determine qual o dígito( ou símbolo ) será exibido após a execução.  
 
 ![Diagrama do circuito](questao9.png)
 
@@ -280,21 +280,32 @@ a)
 ```c
 int mask = 0x34
 
-if((GPIO_Read_Pin(PA0) && !GPIO_Read_Pin(PA0)) || (!GPIO_Read_Pin(PA0) && GPIO_Read_Pin(PA0)) {
-    mask != 0x25;
+if((GPIO_Read_Pin(PA0) && !GPIO_Read_Pin(PA1)) || (!GPIO_Read_Pin(PA0) && GPIO_Read_Pin(PA1)) {
+    mask |= 0x25;
 else
-    mask != 0x61;
+    mask |= 0x61;
 
 GPIO->ODR = mask;
 ```
+ <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: 
+     - 0x34 | 0x25 = 0011 0100 | 0010 0101 = 0011 0101
+     saída: 0011 0101
+     </pre>
 ---
 
 b)
 ```c
-int var = 0x27 << 0;
+int var = 0x27 << 8;
 var |= 0x7D;
 GPIO->ODR = var;
 ```
+ <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: 
+     - desloca 0x27 8 bits a esquerda
+     - 0x27 << 8 = 0x2700 = 0010 0111 0000 0000
+     - 0x7D = 0000 0000 0111 1101
+         Resultado (0x27 << 8) | (0x7D) = 0010 0111 0111 1101
+                             saída: 0111 1101 (A) 
+     </pre>
 ---
 
 ## Questão 10
@@ -305,6 +316,17 @@ Para isso, a linha de controle do servomotor é conectada ao pino PA0, configura
 
 Escreva um trecho de código para que o segundo microcontrolador armazene constantemente em uma variável a posição (em graus) do eixo do servomotor com resolução de fração de grau.  
 
+Resposta: 
+    ```c
+//Resposta: 
+while(1){
+    int X = 0;
+    while(!GPIO_Read_Pin(GPIOC, PIN_2))
+        Delay_us(1);
+        X++;
+    int Y = X;
+}
+```
 ---
 
 ## Questão 11
@@ -334,5 +356,13 @@ for(i = 0; i < 4; ++ i)
 ```
 
 ![Diagrama do circuito](questao11.png)
+
+<pre style="background-color:#222; color:#00ff00; padding:10px;">
+Resposta: d1 = 0x4C, 0x4D, 0x4E, 0x4F
+          d2 = 0x0A, 0x09, 0x08, 0x07
+
+    0x4F = 0b01001111 = 3
+    0x07 = 0b00000111 = 7
+    </pre>
 
 ---
