@@ -228,6 +228,11 @@ Para detectar qual tecla está sendo pressionada, o microcontrolador leva uma li
 
 ---
 
+ <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: 
+     - a) Com as linhas configuradas como open-drain e resistores de pull-up, quando duas teclas são pressionadas ao mesmo tempo podem surgir caminhos cruzados entre linhas e colunas, gerando o efeito de teclas fantasmas (ghosting). Não há risco elétrico, apenas erro lógico na leitura, que pode ser tratado por software (ignorando combinações inválidas) ou por hardware (uso de diodos).
+     - b) Com as linhas configuradas como push-pull, cada saída pode forçar nível alto ou baixo. Assim, ao pressionar duas teclas simultaneamente, pode ocorrer curto-circuito entre uma linha em nível alto e outra em nível baixo, podendo danificar o microcontrolador. Esse problema não pode ser resolvido por software, devendo ser evitado por meio da configuração correta (open-drain) ou resistores de proteção.
+     </pre>
+     
 ## Questão 8
 
 Considere o circuito da figura abaixo.  
@@ -252,6 +257,15 @@ Para manter a posição do eixo do servomotor, os pulsos são enviados periodica
 O microcontrolador STM32 B foi configurado para ler o pino PC2 como entrada e executar um programa que mede a duração do pulso.  
 
 Após um tempo maior que um segundo de execução, determine os possíveis valores da variável observada.  
+
+
+ <pre style="background-color:#222; color:#00ff00; padding:10px;"> Resposta: 
+     - Ttotal = 1 / 40 x 10^6 = 25000 us
+       Thigh = ( 2000/180 * angulo ) + 500 us = ( 2000/180 * 108 ) + 500 us = 1700 us 
+     A condição do while é satisfeita quando o pino está em nível baixo. Logo y = 25000 - 1700 = 23300 . 
+     </pre>
+
+---
 
 ---
 
